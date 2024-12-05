@@ -126,9 +126,8 @@ def main():
 
         # Create tabs for comparison sections
         if selected_companies:
-            performance_tab, metrics_tab = st.tabs([
-                "Performance Comparison",
-                "Financial Metrics"
+            performance_tab = st.tabs([
+                "Performance Comparison"
             ])
             
             with performance_tab:
