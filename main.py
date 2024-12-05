@@ -125,8 +125,9 @@ def main():
 
         # Create tabs for comparison sections
         if selected_companies:
-            performance_tab = st.tabs([
-                "Performance Comparison"
+            performance_tab, metrics_tab = st.tabs([
+                "Performance Comparison",
+                "About"
             ])
             
             with performance_tab:
@@ -134,6 +135,10 @@ def main():
                 with st.spinner('Analyzing selected companies...'):
                     display_company_comparison(selected_companies)
                 print("Main: Comparison display completed")
+                
+            with metrics_tab:
+                # Financial metrics
+                st.write("This comparison shows the performance of the selected companies. You can select up to 4 companies.")
         else:
             st.info("Please select companies from the sidebar to start comparison")
 
