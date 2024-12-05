@@ -3,3 +3,6 @@ keys.py
 
 #pycache
 __pycache__/
+
+# Add .streamlit secrets
+.streamlit/secrets.toml

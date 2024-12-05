@@ -4,7 +4,6 @@ from textblob import TextBlob
 import os
 from datetime import datetime, timedelta
 import pandas as pd
-from keys import NEWS_API_KEY
 
 def get_sentiment(text):
     """Analyze sentiment of text using TextBlob"""
@@ -20,11 +19,24 @@ def get_sentiment(text):
     else:
         return 'Neutral', sentiment
 
+def get_news_api_key():
+    """Get News API key from Streamlit secrets"""
+    try:
+        return st.secrets["NEWS_API_KEY"]
+    except KeyError:
+        st.error("NEWS_API_KEY not found in secrets. Please configure it in your Streamlit deployment.")
+        return None
+
 def display_news_sentiment(symbol, company_name):
     """Display news and sentiment analysis for selected company"""
     st.subheader("Recent News & Sentiment Analysis")
     
     try:
+        # Get API key from secrets
+        NEWS_API_KEY = get_news_api_key()
+        if not NEWS_API_KEY:
+            return
+            
         # Initialize NewsAPI client
         newsapi = NewsApiClient(api_key=NEWS_API_KEY)
         
