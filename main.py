@@ -96,7 +96,6 @@ def main():
         with overview_tab:
             # Company information
             display_company_info(stock)
-            #display in blo
 
         with charts_tab:
             # Stock price chart with full width
@@ -125,10 +124,9 @@ def main():
             )
 
         # Create tabs for comparison sections
-        
+        if selected_companies:
             performance_tab = st.tabs([
-                "Performance Comparison",
-                
+                "Performance Comparison"
             ])
             
             with performance_tab:
@@ -136,7 +134,8 @@ def main():
                 with st.spinner('Analyzing selected companies...'):
                     display_company_comparison(selected_companies)
                 print("Main: Comparison display completed")
-                
+        else:
+            st.info("Please select companies from the sidebar to start comparison")
 
 if __name__ == "__main__":
     main()
