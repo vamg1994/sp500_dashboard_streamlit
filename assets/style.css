@@ -1,0 +1,166 @@
+/* Custom styling for the dashboard */
+
+/* Global styles */
+.block-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Sidebar styling */
+.css-1d391kg {
+    padding: 2rem 1.5rem;
+    background-color: #1a1c23;
+    border-right: 1px solid #2e3140;
+}
+
+/* Tab styling */
+.stTabs {
+    background-color: #1a1c23;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.stTab {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    }
+
+.stTab:hover {
+    background-color: #2e3140;
+    border-radius: 0.5rem;
+}
+
+.stTab[aria-selected="true"] {
+    background-color: #2e3140;
+    border-radius: 0.5rem;
+    border-bottom: 2px solid #ff8800;
+}
+
+/* Metrics grid styling */
+[data-testid="stHorizontalBlock"] {
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+[data-testid="stHorizontalBlock"] > div {
+    background-color: #1a1c23;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid #2e3140;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: calc(33.33% - 0.67rem) !important;
+    flex: 1 1 calc(33.33% - 0.67rem) !important;
+}
+
+/* Chart styling */
+.js-plotly-plot {
+    background-color: #1a1c23;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border: 1px solid #2e3140;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Metric styling */
+.stMetric {
+    margin: 0 !important;
+}
+
+.stMetric [data-testid="stMetricLabel"] {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e2e8f0;
+    margin-bottom: 0.5rem;
+}
+
+.stMetric [data-testid="stMetricValue"] {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #ddc1a2;
+}
+
+/* Text styling */
+p, .stMarkdown {
+    line-height: 1.7;
+    color: #e2e8f0;
+    margin: 0.75rem 0;
+}
+
+/* Selectbox styling */
+.stSelectbox {
+    margin-bottom: 1.5rem;
+}
+
+.stSelectbox > div > div {
+    background-color: #1a1c23;
+    border: 1px solid #2e3140;
+    border-radius: 0.5rem;
+}
+
+/* Button styling */
+.stButton > button {
+    width: 30%;
+    max-height: 30px;
+    border-radius: 1.5rem;
+    margin: 0.75rem 0;
+    padding: 0.75rem 1.5rem;
+    background-color: #ff8800;
+    color: #1a1c23;
+    font-weight: 500;
+    text-align: center;
+}
+
+.stButton > button:hover {
+    background-color: #cc6600;
+}
+
+/* News article cards */
+div[style*="border-left"] {
+    background-color: #1a1c23;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border: 1px solid #2e3140;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+div[style*="border-left"]:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dataframe styling */
+.dataframe {
+    background-color: #1a1c23;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid #2e3140;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress bar styling */
+.stProgress > div > div {
+    background-color: #ff8800;
+}
+
+/* Header styling */
+h1, h2, h3, .stTitle {
+    color: #e2e8f0;
+    margin: 1.5rem 0;
+    font-weight: 600;
+}
+
+/* Link styling */
+a {
+    color: #ff8800;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #cc6600;
+}
