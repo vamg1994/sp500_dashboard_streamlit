@@ -42,11 +42,15 @@ def main():
             ''',
             unsafe_allow_html=True
         )
-        st.image("Foto VAM.png", width=150, use_container_width=False)
+        st.image("vam_pp3.png", width=150, use_container_width=False)
         st.markdown("""
         ### Virgilio Madrid
         Data Scientist
         """)
+        st.link_button("Portfolio 🌐", "https://portfolio-vam.vercel.app/")
+        st.link_button("LinkedIn 💼", "https://www.linkedin.com/in/vamadrid/")
+        st.link_button("E-Mail 📧", "mailto:virgiliomadrid1994@gmail.com")
+        
         
         st.markdown("---")  # Add a divider
         st.write("Data source: Yahoo Finance")
@@ -76,7 +80,8 @@ def main():
                 '5Y': '5y'
             }
             selected_period = st.select_slider('Select Time Period', options=list(periods.keys()))
-
+            
+            
         # Get stock data with loading animation
         with st.spinner(f'Loading data for {selected_company}...'):
             stock = yf.Ticker(selected_company)
@@ -85,12 +90,13 @@ def main():
         
 
         # Create tabs for different sections
-        overview_tab, charts_tab, financials_tab, prediction_tab, news_tab = st.tabs([
+        overview_tab, charts_tab, financials_tab, prediction_tab, news_tab, faq_tab = st.tabs([
             "Company Overview", 
             "Price Charts", 
             "Financial Metrics",
             "Price Prediction",
-            "News & Sentiment"
+            "News & Sentiment",
+            "FAQ"
         ])
 
         with overview_tab:
@@ -112,6 +118,92 @@ def main():
         with news_tab:
             # News sentiment analysis
             display_news_sentiment(selected_company, company_name)
+
+        with faq_tab:
+            st.header("Frequently Asked Questions")
+            
+            st.subheader("About This Dashboard")
+            st.markdown("""
+            This S&P 500 Stock Dashboard is a comprehensive tool for analyzing stocks from the S&P 500 index. 
+            It provides real-time data analysis, technical charts, financial metrics, price predictions, and news sentiment analysis.
+            """)
+            
+            # Explain each tab
+            st.subheader("Tab Explanations")
+            
+            with st.expander("Company Overview"):
+                st.markdown("""
+                - Displays key company information and business summary
+                - Shows sector, industry, and market cap details
+                - Lists major shareholders and institutional holders
+                - Tools used: yfinance API
+                """)
+                
+            with st.expander("Price Charts"):
+                st.markdown("""
+                - Interactive stock price charts with multiple timeframes
+                - Includes volume data and price indicators
+                - Customizable chart periods (1D to 5Y)
+                - Tools used: yfinance API, Plotly for interactive charts
+                """)
+                
+            with st.expander("Financial Metrics"):
+                st.markdown("""
+                - Key financial ratios and metrics
+                - Balance sheet highlights
+                - Income statement analysis
+                - Cash flow indicators
+                - Tools used: yfinance API for financial data
+                """)
+                
+            with st.expander("Price Prediction"):
+                st.markdown("""
+                - Machine learning-based price predictions
+                - Historical price trend analysis
+                - Prediction confidence intervals
+                - Tools used: scikit-learn for machine learning predictions
+                """)
+                
+            with st.expander("News & Sentiment"):
+                st.markdown("""
+                - Latest news articles about the company
+                - Sentiment analysis of news headlines
+                - News impact visualization
+                - Tools used: NewsAPI for news gathering, NLTK for sentiment analysis
+                """)
+            
+            # Tech Stack
+            st.subheader("Technology Stack")
+            st.markdown("""
+            - **Frontend**: Streamlit (Python web framework)
+            - **Data Sources**: 
+                - Yahoo Finance API (stock data)
+                - News API (company news)
+            - **Analysis Tools**:
+                - Pandas (data manipulation)
+                - NumPy (numerical computations)
+                - scikit-learn (machine learning)
+                - NLTK (natural language processing)
+            - **Visualization**:
+                - Plotly (interactive charts)
+                - Streamlit native charts
+            """)
+            
+            # Additional Info
+            st.subheader("Additional Information")
+            st.markdown("""
+            - Data is updated in real-time during market hours
+            - Historical data may have up to 15 minutes delay
+            - Predictions are for educational purposes only
+            - News sentiment analysis uses basic NLP techniques
+            """)
+            
+            # Disclaimer
+            st.warning("""
+            **Disclaimer**: This dashboard is for informational purposes only. 
+            It is not intended to provide financial advice. Always conduct your own research 
+            and consult with financial professionals before making investment decisions.
+            """)
 
     else:  # Company Comparison mode
         # Multiple company selector in sidebar

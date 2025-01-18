@@ -9,8 +9,8 @@ def create_features(df):
     """Create technical features for the model with proper lag to avoid data leakage"""
     df = df.copy()
     
-    # Fill any missing values in OHLCV data
-    df.fillna(method='ffill', inplace=True)
+    # Fill any missing values in OHLCV data using ffill() instead of fillna(method='ffill')
+    df = df.ffill()
     
     # Price-based features with proper lag
     df['Returns'] = df['Close'].pct_change()
@@ -294,8 +294,9 @@ def display_ml_prediction(stock):
     # Get historical data with explicit period
     hist = stock.history(period='max')  # Get maximum available data
 
-    # Filter last year of data to ensure sufficient history
-    hist = hist.last('365D')
+    # Create timezone-aware timestamp for filtering
+    one_year_ago = (pd.Timestamp.now(tz='UTC') - pd.DateOffset(years=1))
+    hist = hist.loc[one_year_ago:]
 
     if len(hist) < 100:  # Reduce minimum required days to 100
         st.error("Insufficient historical data for analysis. Please try a different stock.")
