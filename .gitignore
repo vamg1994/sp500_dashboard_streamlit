@@ -6,3 +6,4 @@ __pycache__/
 
 # Add .streamlit secrets
 .streamlit/secrets.toml
+.env
