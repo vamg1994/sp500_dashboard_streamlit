@@ -1,106 +1,64 @@
 import streamlit as st
+import logging
+# Import the cached function from utils
+from utils import get_stock_info, format_number # Also import format_number if used for stats
+
+# Configure logging if needed specifically here, or rely on global config
+# logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def display_company_info(stock):
     """Display company information and profile using responsive containers"""
-    info = stock.info
-    
+    # Call the cached function (now imported from utils) to get info
+    info = get_stock_info(stock)
+
+    # If info is None (due to error or no data), display a message and exit
+    if info is None:
+        st.warning("Company information could not be loaded.") # Error displayed in get_stock_info
+        return
+
+    # Get symbol safely for keys etc.
+    symbol = info.get('symbol', 'unknown')
+
     # Main container for company profile
     with st.container():
         st.subheader("Company Profile")
-        
-        # Use columns for basic info
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown(
-                f"""
-                <div style='background-color: {st.get_option('theme.secondaryBackgroundColor')}; 
-                           padding: 1rem; border-radius: 0.5rem;'>
-                    <h4>Sector</h4>
-                    {info.get('sector', 'N/A')}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+            st.markdown(f"**Sector:** {info.get('sector', 'N/A')}")
         with col2:
-            st.markdown(
-                f"""
-                <div style='background-color: {st.get_option('theme.secondaryBackgroundColor')}; 
-                           padding: 1rem; border-radius: 0.5rem;'>
-                    <h4>Industry</h4>
-                    {info.get('industry', 'N/A')}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-    
-    # Business Summary section with expander
+            st.markdown(f"**Industry:** {info.get('industry', 'N/A')}")
+
+    # Business Summary section
     with st.container():
-        st.markdown("### Business Summary")
+        st.markdown("#### Business Summary")
         business_summary = info.get('longBusinessSummary', 'No information available')
-        
-        # Create a unique key for this instance
-        state_key = f"show_full_{info.get('symbol', 'unknown')}"
-        
-        # Initialize session state for the toggle if it doesn't exist
-        if state_key not in st.session_state:
-            st.session_state[state_key] = False
+        st.markdown(f"<div style='max-height: 200px; overflow-y: auto; padding: 10px; background-color: {st.get_option('theme.secondaryBackgroundColor')}; border-radius: 0.5rem; margin-bottom: 1rem;'>{business_summary}</div>", unsafe_allow_html=True)
+        # Removed the complex show more/less logic for simplicity, using scroll box instead
 
-        # Create a container with custom styling for the summary
-        summary_container = st.container()
-        
-        # Define the button callbacks
-        def show_more():
-            st.session_state[state_key] = True
-            
-        def show_less():
-            st.session_state[state_key] = False
-
-        # Display the content in the styled container
-        with summary_container:
-            st.markdown(
-                f"""
-                <div style='background-color: {st.get_option('theme.secondaryBackgroundColor')}; 
-                           padding: 1.5rem; border-radius: 0.5rem; margin: 1rem 0;'>
-                    {business_summary[:300] + "..." if len(business_summary) > 300 and not st.session_state[state_key] else business_summary}
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            
-            if len(business_summary) > 300:
-                if not st.session_state[state_key]:
-                    st.button("Show More", 
-                             key=f"more_{info.get('symbol', 'unknown')}", 
-                             on_click=show_more)
-                else:
-                    st.button("Show Less", 
-                             key=f"less_{info.get('symbol', 'unknown')}", 
-                             on_click=show_less)
-    
-    # Key Statistics section using columns for responsive layout
+    # Key Statistics section
     with st.container():
-        st.markdown("### Key Statistics")
-        
-        # Create stats dictionary
+        st.markdown("#### Key Statistics")
         stats = {
+            'Market Cap': info.get('marketCap'),
             'Beta': info.get('beta'),
             '52 Week High': info.get('fiftyTwoWeekHigh'),
             '52 Week Low': info.get('fiftyTwoWeekLow'),
+            'Forward P/E': info.get('forwardPE'),
+            'Trailing P/E': info.get('trailingPE'),
             'Volume': info.get('volume'),
             'Avg Volume': info.get('averageVolume')
         }
-        
-        # Display stats in a responsive grid
-        cols = st.columns(3)
-        for idx, (key, value) in enumerate(stats.items()):
-            with cols[idx % 3]:
-                st.markdown(
-                    f"""
-                    <div style='background-color: {st.get_option('theme.secondaryBackgroundColor')}; 
-                               padding: 1rem; border-radius: 0.5rem; margin: 0.5rem 0;'>
-                        <h4>{key}</h4>
-                        {value if value is not None else 'N/A'}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
+
+        # Display stats in a responsive grid (e.g., 4 columns)
+        num_columns = 4
+        cols = st.columns(num_columns)
+        stat_items = [(k, v) for k, v in stats.items() if v is not None] # Filter out None values
+
+        if not stat_items:
+            st.info("Key statistics are not available.")
+        else:
+            for i, (key, value) in enumerate(stat_items):
+                 with cols[i % num_columns]:
+                      # Determine format: default, or '.2f' for ratios
+                      fmt = '.2f' if key in ['Beta', 'Forward P/E', 'Trailing P/E'] else None
+                      st.metric(label=key, value=format_number(value, fmt)) # Use format_number
